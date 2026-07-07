@@ -8,7 +8,11 @@
 #ifndef INC_PROTOCOL_PARSER_H_
 #define INC_PROTOCOL_PARSER_H_
 
-#include "main.h"
+
+#include <stdint.h>
+#include <stddef.h>
+#include <stdbool.h>
+
 #include "protocol.h"
 
 typedef enum

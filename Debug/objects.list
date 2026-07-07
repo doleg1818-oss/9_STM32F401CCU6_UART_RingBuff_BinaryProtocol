@@ -1,5 +1,6 @@
-"./Core/Src/app_command.o"
+"./Core/Src/api_command.o"
 "./Core/Src/crc8.o"
+"./Core/Src/led.o"
 "./Core/Src/main.o"
 "./Core/Src/protocol.o"
 "./Core/Src/protocol_parser.o"

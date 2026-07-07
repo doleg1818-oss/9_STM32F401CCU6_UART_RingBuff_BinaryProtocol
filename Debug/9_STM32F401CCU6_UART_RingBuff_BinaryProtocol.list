@@ -7,45 +7,45 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
   1 .text         0000390c  080001a0  080001a0  000011a0  2**4
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .rodata       000000b0  08003aac  08003aac  00004aac  2**2
+  2 .rodata       00000094  08003aac  08003aac  00004aac  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  3 .ARM.extab    00000000  08003b5c  08003b5c  0000505c  2**0
+  3 .ARM.extab    00000000  08003b40  08003b40  0000505c  2**0
                   CONTENTS, READONLY
-  4 .ARM          00000008  08003b5c  08003b5c  00004b5c  2**2
+  4 .ARM          00000008  08003b40  08003b40  00004b40  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  5 .preinit_array 00000000  08003b64  08003b64  0000505c  2**0
+  5 .preinit_array 00000000  08003b48  08003b48  0000505c  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  6 .init_array   00000004  08003b64  08003b64  00004b64  2**2
+  6 .init_array   00000004  08003b48  08003b48  00004b48  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  7 .fini_array   00000004  08003b68  08003b68  00004b68  2**2
+  7 .fini_array   00000004  08003b4c  08003b4c  00004b4c  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  8 .data         0000005c  20000000  08003b6c  00005000  2**2
+  8 .data         0000005c  20000000  08003b50  00005000  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  9 .bss          000002a0  2000005c  08003bc8  0000505c  2**2
+  9 .bss          000002a0  2000005c  08003bac  0000505c  2**2
                   ALLOC
- 10 ._user_heap_stack 00000604  200002fc  08003bc8  000052fc  2**0
+ 10 ._user_heap_stack 00000604  200002fc  08003bac  000052fc  2**0
                   ALLOC
  11 .ARM.attributes 00000030  00000000  00000000  0000505c  2**0
                   CONTENTS, READONLY
- 12 .debug_info   00008e96  00000000  00000000  0000508c  2**0
+ 12 .debug_info   0000972a  00000000  00000000  0000508c  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 13 .debug_abbrev 00001aea  00000000  00000000  0000df22  2**0
+ 13 .debug_abbrev 00001dc9  00000000  00000000  0000e7b6  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_aranges 000007c0  00000000  00000000  0000fa10  2**3
+ 14 .debug_aranges 000007f0  00000000  00000000  00010580  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_rnglists 000005d4  00000000  00000000  000101d0  2**0
+ 15 .debug_rnglists 000005ee  00000000  00000000  00010d70  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_macro  000025bc  00000000  00000000  000107a4  2**0
+ 16 .debug_macro  00015e86  00000000  00000000  0001135e  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_line   0000b6f5  00000000  00000000  00012d60  2**0
+ 17 .debug_line   0000b05b  00000000  00000000  000271e4  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    000856d6  00000000  00000000  0001e455  2**0
+ 18 .debug_str    0008570e  00000000  00000000  0003223f  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .comment      00000043  00000000  00000000  000a3b2b  2**0
+ 19 .comment      00000043  00000000  00000000  000b794d  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  000022d0  00000000  00000000  000a3b70  2**2
+ 20 .debug_frame  000022f0  00000000  00000000  000b7990  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 21 .debug_line_str 00000078  00000000  00000000  000a5e40  2**0
+ 21 .debug_line_str 00000078  00000000  00000000  000b9c80  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -429,309 +429,309 @@ Disassembly of section .text:
  80005a8:	4770      	bx	lr
  80005aa:	bf00      	nop
 
-080005ac <crc8_calculate>:
-#define CRC8_POLYNOMIAL 0x07U
-#define CRC8_INITIAL   0x00U
-
-
-uint8_t crc8_calculate(const uint8_t *data, size_t length)
-{
- 80005ac:	b480      	push	{r7}
- 80005ae:	b087      	sub	sp, #28
- 80005b0:	af00      	add	r7, sp, #0
- 80005b2:	6078      	str	r0, [r7, #4]
- 80005b4:	6039      	str	r1, [r7, #0]
-    uint8_t crc = CRC8_INITIAL;
- 80005b6:	2300      	movs	r3, #0
- 80005b8:	75fb      	strb	r3, [r7, #23]
-
-    if(data == NULL)
- 80005ba:	687b      	ldr	r3, [r7, #4]
- 80005bc:	2b00      	cmp	r3, #0
- 80005be:	d101      	bne.n	80005c4 <crc8_calculate+0x18>
-    {
-        return 0;
- 80005c0:	2300      	movs	r3, #0
- 80005c2:	e028      	b.n	8000616 <crc8_calculate+0x6a>
-    }
-
-    for(size_t i = 0; i < length; i++)
- 80005c4:	2300      	movs	r3, #0
- 80005c6:	613b      	str	r3, [r7, #16]
- 80005c8:	e020      	b.n	800060c <crc8_calculate+0x60>
-    {
-        crc = crc ^ data[i];
- 80005ca:	687a      	ldr	r2, [r7, #4]
- 80005cc:	693b      	ldr	r3, [r7, #16]
- 80005ce:	4413      	add	r3, r2
- 80005d0:	781a      	ldrb	r2, [r3, #0]
- 80005d2:	7dfb      	ldrb	r3, [r7, #23]
- 80005d4:	4053      	eors	r3, r2
- 80005d6:	75fb      	strb	r3, [r7, #23]
-        for(uint8_t bit = 0; bit < 8; bit++)
- 80005d8:	2300      	movs	r3, #0
- 80005da:	73fb      	strb	r3, [r7, #15]
- 80005dc:	e010      	b.n	8000600 <crc8_calculate+0x54>
-        {
-            if((crc & 0x80) != 0)
- 80005de:	f997 3017 	ldrsb.w	r3, [r7, #23]
- 80005e2:	2b00      	cmp	r3, #0
- 80005e4:	da06      	bge.n	80005f4 <crc8_calculate+0x48>
-            {
-                crc = (uint8_t)((crc << 1) ^ CRC8_POLYNOMIAL);  // add polinome? if last bite was 1
- 80005e6:	7dfb      	ldrb	r3, [r7, #23]
- 80005e8:	005b      	lsls	r3, r3, #1
- 80005ea:	b2db      	uxtb	r3, r3
- 80005ec:	f083 0307 	eor.w	r3, r3, #7
- 80005f0:	75fb      	strb	r3, [r7, #23]
- 80005f2:	e002      	b.n	80005fa <crc8_calculate+0x4e>
-            }
-            else
-            {
-                crc <<= 1;
- 80005f4:	7dfb      	ldrb	r3, [r7, #23]
- 80005f6:	005b      	lsls	r3, r3, #1
- 80005f8:	75fb      	strb	r3, [r7, #23]
-        for(uint8_t bit = 0; bit < 8; bit++)
- 80005fa:	7bfb      	ldrb	r3, [r7, #15]
- 80005fc:	3301      	adds	r3, #1
- 80005fe:	73fb      	strb	r3, [r7, #15]
- 8000600:	7bfb      	ldrb	r3, [r7, #15]
- 8000602:	2b07      	cmp	r3, #7
- 8000604:	d9eb      	bls.n	80005de <crc8_calculate+0x32>
-    for(size_t i = 0; i < length; i++)
- 8000606:	693b      	ldr	r3, [r7, #16]
- 8000608:	3301      	adds	r3, #1
- 800060a:	613b      	str	r3, [r7, #16]
- 800060c:	693a      	ldr	r2, [r7, #16]
- 800060e:	683b      	ldr	r3, [r7, #0]
- 8000610:	429a      	cmp	r2, r3
- 8000612:	d3da      	bcc.n	80005ca <crc8_calculate+0x1e>
-            }
-        }
-    }
-    return crc;
- 8000614:	7dfb      	ldrb	r3, [r7, #23]
-}
- 8000616:	4618      	mov	r0, r3
- 8000618:	371c      	adds	r7, #28
- 800061a:	46bd      	mov	sp, r7
- 800061c:	f85d 7b04 	ldr.w	r7, [sp], #4
- 8000620:	4770      	bx	lr
-	...
-
-08000624 <led_on_off>:
-/* USER CODE END PFP */
-
-/* Private user code ---------------------------------------------------------*/
-/* USER CODE BEGIN 0 */
-void led_on_off(bool state)
-{
- 8000624:	b580      	push	{r7, lr}
- 8000626:	b082      	sub	sp, #8
- 8000628:	af00      	add	r7, sp, #0
- 800062a:	4603      	mov	r3, r0
- 800062c:	71fb      	strb	r3, [r7, #7]
-	if(state == false)
- 800062e:	79fb      	ldrb	r3, [r7, #7]
- 8000630:	f083 0301 	eor.w	r3, r3, #1
- 8000634:	b2db      	uxtb	r3, r3
- 8000636:	2b00      	cmp	r3, #0
- 8000638:	d006      	beq.n	8000648 <led_on_off+0x24>
-	{
-		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_SET);
- 800063a:	2201      	movs	r2, #1
- 800063c:	f44f 5100 	mov.w	r1, #8192	@ 0x2000
- 8000640:	4806      	ldr	r0, [pc, #24]	@ (800065c <led_on_off+0x38>)
- 8000642:	f001 f895 	bl	8001770 <HAL_GPIO_WritePin>
-	}
-	else
-	{
-		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
-	}
-}
- 8000646:	e005      	b.n	8000654 <led_on_off+0x30>
-		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
- 8000648:	2200      	movs	r2, #0
- 800064a:	f44f 5100 	mov.w	r1, #8192	@ 0x2000
- 800064e:	4803      	ldr	r0, [pc, #12]	@ (800065c <led_on_off+0x38>)
- 8000650:	f001 f88e 	bl	8001770 <HAL_GPIO_WritePin>
-}
- 8000654:	bf00      	nop
- 8000656:	3708      	adds	r7, #8
- 8000658:	46bd      	mov	sp, r7
- 800065a:	bd80      	pop	{r7, pc}
- 800065c:	40020800 	.word	0x40020800
-
-08000660 <procces_packed>:
-#define CMD_PING		0x01
-#define CMD_LED_SET		0x02
+080005ac <procces_packed>:
 #define CMD_GET_STATUS	0x03
+
+extern UART_HandleTypeDef huart1;
 
 void procces_packed(protocol_packed_t *packed)
 {
- 8000660:	b590      	push	{r4, r7, lr}
- 8000662:	b0a1      	sub	sp, #132	@ 0x84
- 8000664:	af00      	add	r7, sp, #0
- 8000666:	6078      	str	r0, [r7, #4]
+ 80005ac:	b590      	push	{r4, r7, lr}
+ 80005ae:	b0a1      	sub	sp, #132	@ 0x84
+ 80005b0:	af00      	add	r7, sp, #0
+ 80005b2:	6078      	str	r0, [r7, #4]
 	if(packed == NULL)
- 8000668:	687b      	ldr	r3, [r7, #4]
- 800066a:	2b00      	cmp	r3, #0
- 800066c:	d079      	beq.n	8000762 <procces_packed+0x102>
+ 80005b4:	687b      	ldr	r3, [r7, #4]
+ 80005b6:	2b00      	cmp	r3, #0
+ 80005b8:	d079      	beq.n	80006ae <procces_packed+0x102>
 	{
 		return;
 	}
 
 	switch(packed->type)
- 800066e:	687b      	ldr	r3, [r7, #4]
- 8000670:	781b      	ldrb	r3, [r3, #0]
- 8000672:	2b03      	cmp	r3, #3
- 8000674:	d045      	beq.n	8000702 <procces_packed+0xa2>
- 8000676:	2b03      	cmp	r3, #3
- 8000678:	dc64      	bgt.n	8000744 <procces_packed+0xe4>
- 800067a:	2b01      	cmp	r3, #1
- 800067c:	d002      	beq.n	8000684 <procces_packed+0x24>
- 800067e:	2b02      	cmp	r3, #2
- 8000680:	d00f      	beq.n	80006a2 <procces_packed+0x42>
- 8000682:	e05f      	b.n	8000744 <procces_packed+0xe4>
+ 80005ba:	687b      	ldr	r3, [r7, #4]
+ 80005bc:	781b      	ldrb	r3, [r3, #0]
+ 80005be:	2b03      	cmp	r3, #3
+ 80005c0:	d045      	beq.n	800064e <procces_packed+0xa2>
+ 80005c2:	2b03      	cmp	r3, #3
+ 80005c4:	dc64      	bgt.n	8000690 <procces_packed+0xe4>
+ 80005c6:	2b01      	cmp	r3, #1
+ 80005c8:	d002      	beq.n	80005d0 <procces_packed+0x24>
+ 80005ca:	2b02      	cmp	r3, #2
+ 80005cc:	d00f      	beq.n	80005ee <procces_packed+0x42>
+ 80005ce:	e05f      	b.n	8000690 <procces_packed+0xe4>
 	{
 		case CMD_PING:
 		{
 			const char msg[] = "PONG..\n\r";
- 8000684:	4a39      	ldr	r2, [pc, #228]	@ (800076c <procces_packed+0x10c>)
- 8000686:	f107 0374 	add.w	r3, r7, #116	@ 0x74
- 800068a:	ca07      	ldmia	r2, {r0, r1, r2}
- 800068c:	c303      	stmia	r3!, {r0, r1}
- 800068e:	701a      	strb	r2, [r3, #0]
+ 80005d0:	4a39      	ldr	r2, [pc, #228]	@ (80006b8 <procces_packed+0x10c>)
+ 80005d2:	f107 0374 	add.w	r3, r7, #116	@ 0x74
+ 80005d6:	ca07      	ldmia	r2, {r0, r1, r2}
+ 80005d8:	c303      	stmia	r3!, {r0, r1}
+ 80005da:	701a      	strb	r2, [r3, #0]
 			HAL_UART_Transmit(&huart1,(uint8_t*) msg, sizeof(msg)-1, HAL_MAX_DELAY);
- 8000690:	f107 0174 	add.w	r1, r7, #116	@ 0x74
- 8000694:	f04f 33ff 	mov.w	r3, #4294967295
- 8000698:	2208      	movs	r2, #8
- 800069a:	4835      	ldr	r0, [pc, #212]	@ (8000770 <procces_packed+0x110>)
- 800069c:	f001 fd2a 	bl	80020f4 <HAL_UART_Transmit>
+ 80005dc:	f107 0174 	add.w	r1, r7, #116	@ 0x74
+ 80005e0:	f04f 33ff 	mov.w	r3, #4294967295
+ 80005e4:	2208      	movs	r2, #8
+ 80005e6:	4835      	ldr	r0, [pc, #212]	@ (80006bc <procces_packed+0x110>)
+ 80005e8:	f001 fd84 	bl	80020f4 <HAL_UART_Transmit>
 			break;
- 80006a0:	e060      	b.n	8000764 <procces_packed+0x104>
+ 80005ec:	e060      	b.n	80006b0 <procces_packed+0x104>
 		}
 		case CMD_LED_SET:
 		{
 			if(packed->payload_len == 1)
- 80006a2:	687b      	ldr	r3, [r7, #4]
- 80006a4:	f893 3021 	ldrb.w	r3, [r3, #33]	@ 0x21
- 80006a8:	2b01      	cmp	r3, #1
- 80006aa:	d11b      	bne.n	80006e4 <procces_packed+0x84>
+ 80005ee:	687b      	ldr	r3, [r7, #4]
+ 80005f0:	f893 3021 	ldrb.w	r3, [r3, #33]	@ 0x21
+ 80005f4:	2b01      	cmp	r3, #1
+ 80005f6:	d11b      	bne.n	8000630 <procces_packed+0x84>
 			{
 				bool led_state = (packed->payload[0] != 0);
- 80006ac:	687b      	ldr	r3, [r7, #4]
- 80006ae:	785b      	ldrb	r3, [r3, #1]
- 80006b0:	2b00      	cmp	r3, #0
- 80006b2:	bf14      	ite	ne
- 80006b4:	2301      	movne	r3, #1
- 80006b6:	2300      	moveq	r3, #0
- 80006b8:	f887 307f 	strb.w	r3, [r7, #127]	@ 0x7f
+ 80005f8:	687b      	ldr	r3, [r7, #4]
+ 80005fa:	785b      	ldrb	r3, [r3, #1]
+ 80005fc:	2b00      	cmp	r3, #0
+ 80005fe:	bf14      	ite	ne
+ 8000600:	2301      	movne	r3, #1
+ 8000602:	2300      	moveq	r3, #0
+ 8000604:	f887 307f 	strb.w	r3, [r7, #127]	@ 0x7f
 				led_on_off(led_state);
- 80006bc:	f897 307f 	ldrb.w	r3, [r7, #127]	@ 0x7f
- 80006c0:	4618      	mov	r0, r3
- 80006c2:	f7ff ffaf 	bl	8000624 <led_on_off>
+ 8000608:	f897 307f 	ldrb.w	r3, [r7, #127]	@ 0x7f
+ 800060c:	4618      	mov	r0, r3
+ 800060e:	f000 f89d 	bl	800074c <led_on_off>
 				const char msg[] = "LED OK\n\r";
- 80006c6:	4a2b      	ldr	r2, [pc, #172]	@ (8000774 <procces_packed+0x114>)
- 80006c8:	f107 0368 	add.w	r3, r7, #104	@ 0x68
- 80006cc:	ca07      	ldmia	r2, {r0, r1, r2}
- 80006ce:	c303      	stmia	r3!, {r0, r1}
- 80006d0:	701a      	strb	r2, [r3, #0]
+ 8000612:	4a2b      	ldr	r2, [pc, #172]	@ (80006c0 <procces_packed+0x114>)
+ 8000614:	f107 0368 	add.w	r3, r7, #104	@ 0x68
+ 8000618:	ca07      	ldmia	r2, {r0, r1, r2}
+ 800061a:	c303      	stmia	r3!, {r0, r1}
+ 800061c:	701a      	strb	r2, [r3, #0]
 				HAL_UART_Transmit(&huart1,(uint8_t*) msg, sizeof(msg)-1, HAL_MAX_DELAY);
- 80006d2:	f107 0168 	add.w	r1, r7, #104	@ 0x68
- 80006d6:	f04f 33ff 	mov.w	r3, #4294967295
- 80006da:	2208      	movs	r2, #8
- 80006dc:	4824      	ldr	r0, [pc, #144]	@ (8000770 <procces_packed+0x110>)
- 80006de:	f001 fd09 	bl	80020f4 <HAL_UART_Transmit>
+ 800061e:	f107 0168 	add.w	r1, r7, #104	@ 0x68
+ 8000622:	f04f 33ff 	mov.w	r3, #4294967295
+ 8000626:	2208      	movs	r2, #8
+ 8000628:	4824      	ldr	r0, [pc, #144]	@ (80006bc <procces_packed+0x110>)
+ 800062a:	f001 fd63 	bl	80020f4 <HAL_UART_Transmit>
 			else
 			{
 				const char msg[] = "LED ERR\n\r";
 				HAL_UART_Transmit(&huart1,(uint8_t*) msg, sizeof(msg)-1, HAL_MAX_DELAY);
 			}
 			break;
- 80006e2:	e03f      	b.n	8000764 <procces_packed+0x104>
+ 800062e:	e03f      	b.n	80006b0 <procces_packed+0x104>
 				const char msg[] = "LED ERR\n\r";
- 80006e4:	4a24      	ldr	r2, [pc, #144]	@ (8000778 <procces_packed+0x118>)
- 80006e6:	f107 035c 	add.w	r3, r7, #92	@ 0x5c
- 80006ea:	ca07      	ldmia	r2, {r0, r1, r2}
- 80006ec:	c303      	stmia	r3!, {r0, r1}
- 80006ee:	801a      	strh	r2, [r3, #0]
+ 8000630:	4a24      	ldr	r2, [pc, #144]	@ (80006c4 <procces_packed+0x118>)
+ 8000632:	f107 035c 	add.w	r3, r7, #92	@ 0x5c
+ 8000636:	ca07      	ldmia	r2, {r0, r1, r2}
+ 8000638:	c303      	stmia	r3!, {r0, r1}
+ 800063a:	801a      	strh	r2, [r3, #0]
 				HAL_UART_Transmit(&huart1,(uint8_t*) msg, sizeof(msg)-1, HAL_MAX_DELAY);
- 80006f0:	f107 015c 	add.w	r1, r7, #92	@ 0x5c
- 80006f4:	f04f 33ff 	mov.w	r3, #4294967295
- 80006f8:	2209      	movs	r2, #9
- 80006fa:	481d      	ldr	r0, [pc, #116]	@ (8000770 <procces_packed+0x110>)
- 80006fc:	f001 fcfa 	bl	80020f4 <HAL_UART_Transmit>
+ 800063c:	f107 015c 	add.w	r1, r7, #92	@ 0x5c
+ 8000640:	f04f 33ff 	mov.w	r3, #4294967295
+ 8000644:	2209      	movs	r2, #9
+ 8000646:	481d      	ldr	r0, [pc, #116]	@ (80006bc <procces_packed+0x110>)
+ 8000648:	f001 fd54 	bl	80020f4 <HAL_UART_Transmit>
 			break;
- 8000700:	e030      	b.n	8000764 <procces_packed+0x104>
+ 800064c:	e030      	b.n	80006b0 <procces_packed+0x104>
 		}
 		case CMD_GET_STATUS:
 		{
 			char msg[64] = {0,};
- 8000702:	f107 030c 	add.w	r3, r7, #12
- 8000706:	2240      	movs	r2, #64	@ 0x40
- 8000708:	2100      	movs	r1, #0
- 800070a:	4618      	mov	r0, r3
- 800070c:	f002 fd44 	bl	8003198 <memset>
+ 800064e:	f107 030c 	add.w	r3, r7, #12
+ 8000652:	2240      	movs	r2, #64	@ 0x40
+ 8000654:	2100      	movs	r1, #0
+ 8000656:	4618      	mov	r0, r3
+ 8000658:	f002 fd9e 	bl	8003198 <memset>
 			snprintf(msg, sizeof(msg), "STATUS LED %d \n\r",
 					HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13) == GPIO_PIN_RESET ? 1 : 0);
- 8000710:	f44f 5100 	mov.w	r1, #8192	@ 0x2000
- 8000714:	4819      	ldr	r0, [pc, #100]	@ (800077c <procces_packed+0x11c>)
- 8000716:	f001 f813 	bl	8001740 <HAL_GPIO_ReadPin>
- 800071a:	4603      	mov	r3, r0
+ 800065c:	f44f 5100 	mov.w	r1, #8192	@ 0x2000
+ 8000660:	4819      	ldr	r0, [pc, #100]	@ (80006c8 <procces_packed+0x11c>)
+ 8000662:	f001 f86d 	bl	8001740 <HAL_GPIO_ReadPin>
+ 8000666:	4603      	mov	r3, r0
 			snprintf(msg, sizeof(msg), "STATUS LED %d \n\r",
- 800071c:	2b00      	cmp	r3, #0
- 800071e:	bf0c      	ite	eq
- 8000720:	2301      	moveq	r3, #1
- 8000722:	2300      	movne	r3, #0
- 8000724:	b2db      	uxtb	r3, r3
- 8000726:	f107 000c 	add.w	r0, r7, #12
- 800072a:	4a15      	ldr	r2, [pc, #84]	@ (8000780 <procces_packed+0x120>)
- 800072c:	2140      	movs	r1, #64	@ 0x40
- 800072e:	f002 fcfd 	bl	800312c <sniprintf>
+ 8000668:	2b00      	cmp	r3, #0
+ 800066a:	bf0c      	ite	eq
+ 800066c:	2301      	moveq	r3, #1
+ 800066e:	2300      	movne	r3, #0
+ 8000670:	b2db      	uxtb	r3, r3
+ 8000672:	f107 000c 	add.w	r0, r7, #12
+ 8000676:	4a15      	ldr	r2, [pc, #84]	@ (80006cc <procces_packed+0x120>)
+ 8000678:	2140      	movs	r1, #64	@ 0x40
+ 800067a:	f002 fd57 	bl	800312c <sniprintf>
 			HAL_UART_Transmit(&huart1,(uint8_t*) msg, sizeof(msg)-1, HAL_MAX_DELAY);
- 8000732:	f107 010c 	add.w	r1, r7, #12
- 8000736:	f04f 33ff 	mov.w	r3, #4294967295
- 800073a:	223f      	movs	r2, #63	@ 0x3f
- 800073c:	480c      	ldr	r0, [pc, #48]	@ (8000770 <procces_packed+0x110>)
- 800073e:	f001 fcd9 	bl	80020f4 <HAL_UART_Transmit>
+ 800067e:	f107 010c 	add.w	r1, r7, #12
+ 8000682:	f04f 33ff 	mov.w	r3, #4294967295
+ 8000686:	223f      	movs	r2, #63	@ 0x3f
+ 8000688:	480c      	ldr	r0, [pc, #48]	@ (80006bc <procces_packed+0x110>)
+ 800068a:	f001 fd33 	bl	80020f4 <HAL_UART_Transmit>
 			break;
- 8000742:	e00f      	b.n	8000764 <procces_packed+0x104>
+ 800068e:	e00f      	b.n	80006b0 <procces_packed+0x104>
 		}
 		default:
 		{
 			const char msg[] = "Wrong CMD !!!\n\r";
- 8000744:	4b0f      	ldr	r3, [pc, #60]	@ (8000784 <procces_packed+0x124>)
- 8000746:	f107 044c 	add.w	r4, r7, #76	@ 0x4c
- 800074a:	cb0f      	ldmia	r3, {r0, r1, r2, r3}
- 800074c:	e884 000f 	stmia.w	r4, {r0, r1, r2, r3}
+ 8000690:	4b0f      	ldr	r3, [pc, #60]	@ (80006d0 <procces_packed+0x124>)
+ 8000692:	f107 044c 	add.w	r4, r7, #76	@ 0x4c
+ 8000696:	cb0f      	ldmia	r3, {r0, r1, r2, r3}
+ 8000698:	e884 000f 	stmia.w	r4, {r0, r1, r2, r3}
 			HAL_UART_Transmit(&huart1,(uint8_t*) msg, sizeof(msg)-1, HAL_MAX_DELAY);
- 8000750:	f107 014c 	add.w	r1, r7, #76	@ 0x4c
- 8000754:	f04f 33ff 	mov.w	r3, #4294967295
- 8000758:	220f      	movs	r2, #15
- 800075a:	4805      	ldr	r0, [pc, #20]	@ (8000770 <procces_packed+0x110>)
- 800075c:	f001 fcca 	bl	80020f4 <HAL_UART_Transmit>
+ 800069c:	f107 014c 	add.w	r1, r7, #76	@ 0x4c
+ 80006a0:	f04f 33ff 	mov.w	r3, #4294967295
+ 80006a4:	220f      	movs	r2, #15
+ 80006a6:	4805      	ldr	r0, [pc, #20]	@ (80006bc <procces_packed+0x110>)
+ 80006a8:	f001 fd24 	bl	80020f4 <HAL_UART_Transmit>
 			break;
- 8000760:	e000      	b.n	8000764 <procces_packed+0x104>
+ 80006ac:	e000      	b.n	80006b0 <procces_packed+0x104>
 		return;
- 8000762:	bf00      	nop
+ 80006ae:	bf00      	nop
 		}
 
 
 	}
 }
- 8000764:	3784      	adds	r7, #132	@ 0x84
- 8000766:	46bd      	mov	sp, r7
- 8000768:	bd90      	pop	{r4, r7, pc}
- 800076a:	bf00      	nop
- 800076c:	08003adc 	.word	0x08003adc
- 8000770:	20000164 	.word	0x20000164
- 8000774:	08003ae8 	.word	0x08003ae8
- 8000778:	08003af4 	.word	0x08003af4
- 800077c:	40020800 	.word	0x40020800
- 8000780:	08003ac8 	.word	0x08003ac8
- 8000784:	08003b00 	.word	0x08003b00
+ 80006b0:	3784      	adds	r7, #132	@ 0x84
+ 80006b2:	46bd      	mov	sp, r7
+ 80006b4:	bd90      	pop	{r4, r7, pc}
+ 80006b6:	bf00      	nop
+ 80006b8:	08003ac0 	.word	0x08003ac0
+ 80006bc:	20000164 	.word	0x20000164
+ 80006c0:	08003acc 	.word	0x08003acc
+ 80006c4:	08003ad8 	.word	0x08003ad8
+ 80006c8:	40020800 	.word	0x40020800
+ 80006cc:	08003aac 	.word	0x08003aac
+ 80006d0:	08003ae4 	.word	0x08003ae4
+
+080006d4 <crc8_calculate>:
+#define CRC8_POLYNOMIAL 0x07U
+#define CRC8_INITIAL   0x00U
+
+
+uint8_t crc8_calculate(const uint8_t *data, size_t length)
+{
+ 80006d4:	b480      	push	{r7}
+ 80006d6:	b087      	sub	sp, #28
+ 80006d8:	af00      	add	r7, sp, #0
+ 80006da:	6078      	str	r0, [r7, #4]
+ 80006dc:	6039      	str	r1, [r7, #0]
+    uint8_t crc = CRC8_INITIAL;
+ 80006de:	2300      	movs	r3, #0
+ 80006e0:	75fb      	strb	r3, [r7, #23]
+
+    if(data == NULL)
+ 80006e2:	687b      	ldr	r3, [r7, #4]
+ 80006e4:	2b00      	cmp	r3, #0
+ 80006e6:	d101      	bne.n	80006ec <crc8_calculate+0x18>
+    {
+        return 0;
+ 80006e8:	2300      	movs	r3, #0
+ 80006ea:	e028      	b.n	800073e <crc8_calculate+0x6a>
+    }
+
+    for(size_t i = 0; i < length; i++)
+ 80006ec:	2300      	movs	r3, #0
+ 80006ee:	613b      	str	r3, [r7, #16]
+ 80006f0:	e020      	b.n	8000734 <crc8_calculate+0x60>
+    {
+        crc = crc ^ data[i];
+ 80006f2:	687a      	ldr	r2, [r7, #4]
+ 80006f4:	693b      	ldr	r3, [r7, #16]
+ 80006f6:	4413      	add	r3, r2
+ 80006f8:	781a      	ldrb	r2, [r3, #0]
+ 80006fa:	7dfb      	ldrb	r3, [r7, #23]
+ 80006fc:	4053      	eors	r3, r2
+ 80006fe:	75fb      	strb	r3, [r7, #23]
+        for(uint8_t bit = 0; bit < 8; bit++)
+ 8000700:	2300      	movs	r3, #0
+ 8000702:	73fb      	strb	r3, [r7, #15]
+ 8000704:	e010      	b.n	8000728 <crc8_calculate+0x54>
+        {
+            if((crc & 0x80) != 0)
+ 8000706:	f997 3017 	ldrsb.w	r3, [r7, #23]
+ 800070a:	2b00      	cmp	r3, #0
+ 800070c:	da06      	bge.n	800071c <crc8_calculate+0x48>
+            {
+                crc = (uint8_t)((crc << 1) ^ CRC8_POLYNOMIAL);  // add polinome? if last bite was 1
+ 800070e:	7dfb      	ldrb	r3, [r7, #23]
+ 8000710:	005b      	lsls	r3, r3, #1
+ 8000712:	b2db      	uxtb	r3, r3
+ 8000714:	f083 0307 	eor.w	r3, r3, #7
+ 8000718:	75fb      	strb	r3, [r7, #23]
+ 800071a:	e002      	b.n	8000722 <crc8_calculate+0x4e>
+            }
+            else
+            {
+                crc <<= 1;
+ 800071c:	7dfb      	ldrb	r3, [r7, #23]
+ 800071e:	005b      	lsls	r3, r3, #1
+ 8000720:	75fb      	strb	r3, [r7, #23]
+        for(uint8_t bit = 0; bit < 8; bit++)
+ 8000722:	7bfb      	ldrb	r3, [r7, #15]
+ 8000724:	3301      	adds	r3, #1
+ 8000726:	73fb      	strb	r3, [r7, #15]
+ 8000728:	7bfb      	ldrb	r3, [r7, #15]
+ 800072a:	2b07      	cmp	r3, #7
+ 800072c:	d9eb      	bls.n	8000706 <crc8_calculate+0x32>
+    for(size_t i = 0; i < length; i++)
+ 800072e:	693b      	ldr	r3, [r7, #16]
+ 8000730:	3301      	adds	r3, #1
+ 8000732:	613b      	str	r3, [r7, #16]
+ 8000734:	693a      	ldr	r2, [r7, #16]
+ 8000736:	683b      	ldr	r3, [r7, #0]
+ 8000738:	429a      	cmp	r2, r3
+ 800073a:	d3da      	bcc.n	80006f2 <crc8_calculate+0x1e>
+            }
+        }
+    }
+    return crc;
+ 800073c:	7dfb      	ldrb	r3, [r7, #23]
+}
+ 800073e:	4618      	mov	r0, r3
+ 8000740:	371c      	adds	r7, #28
+ 8000742:	46bd      	mov	sp, r7
+ 8000744:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 8000748:	4770      	bx	lr
+	...
+
+0800074c <led_on_off>:
+
+#include "led.h"
+#include "main.h"
+
+void led_on_off(bool state)
+{
+ 800074c:	b580      	push	{r7, lr}
+ 800074e:	b082      	sub	sp, #8
+ 8000750:	af00      	add	r7, sp, #0
+ 8000752:	4603      	mov	r3, r0
+ 8000754:	71fb      	strb	r3, [r7, #7]
+	if(state == false)
+ 8000756:	79fb      	ldrb	r3, [r7, #7]
+ 8000758:	f083 0301 	eor.w	r3, r3, #1
+ 800075c:	b2db      	uxtb	r3, r3
+ 800075e:	2b00      	cmp	r3, #0
+ 8000760:	d006      	beq.n	8000770 <led_on_off+0x24>
+	{
+		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_SET);
+ 8000762:	2201      	movs	r2, #1
+ 8000764:	f44f 5100 	mov.w	r1, #8192	@ 0x2000
+ 8000768:	4806      	ldr	r0, [pc, #24]	@ (8000784 <led_on_off+0x38>)
+ 800076a:	f001 f801 	bl	8001770 <HAL_GPIO_WritePin>
+	}
+	else
+	{
+		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
+	}
+}
+ 800076e:	e005      	b.n	800077c <led_on_off+0x30>
+		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
+ 8000770:	2200      	movs	r2, #0
+ 8000772:	f44f 5100 	mov.w	r1, #8192	@ 0x2000
+ 8000776:	4803      	ldr	r0, [pc, #12]	@ (8000784 <led_on_off+0x38>)
+ 8000778:	f000 fffa 	bl	8001770 <HAL_GPIO_WritePin>
+}
+ 800077c:	bf00      	nop
+ 800077e:	3708      	adds	r7, #8
+ 8000780:	46bd      	mov	sp, r7
+ 8000782:	bd80      	pop	{r7, pc}
+ 8000784:	40020800 	.word	0x40020800
 
 08000788 <main>:
 /**
@@ -766,10 +766,9 @@ int main(void)
  8000796:	f000 f8bf 	bl	8000918 <MX_GPIO_Init>
   MX_USART1_UART_Init();
  800079a:	f000 f893 	bl	80008c4 <MX_USART1_UART_Init>
-
+  /* USER CODE BEGIN 2 */
 
   //test_calculate_crc();
-
 
   rb_init(&uart_rx_rb, uart_rx_storage, UART_RX_BUFFER_SIZE);
  800079e:	2280      	movs	r2, #128	@ 0x80
@@ -811,11 +810,9 @@ int main(void)
 		  {
 			  procces_packed(&received_packet);
  80007da:	4809      	ldr	r0, [pc, #36]	@ (8000800 <main+0x78>)
- 80007dc:	f7ff ff40 	bl	8000660 <procces_packed>
-
+ 80007dc:	f7ff fee6 	bl	80005ac <procces_packed>
 //			  const char msg[] = "PACKED OK";
 //			  HAL_UART_Transmit(&huart1,(uint8_t*) msg, sizeof(msg)-1, HAL_MAX_DELAY);
-
 			  uint8_t test = 0;
  80007e0:	2300      	movs	r3, #0
  80007e2:	71fb      	strb	r3, [r7, #7]
@@ -1279,7 +1276,7 @@ bool protocol_parse_packet(const uint8_t *packet, size_t packet_len, protocol_pa
  8000a76:	3b01      	subs	r3, #1
  8000a78:	4619      	mov	r1, r3
  8000a7a:	68f8      	ldr	r0, [r7, #12]
- 8000a7c:	f7ff fd96 	bl	80005ac <crc8_calculate>
+ 8000a7c:	f7ff fe2a 	bl	80006d4 <crc8_calculate>
  8000a80:	4603      	mov	r3, r0
  8000a82:	75bb      	strb	r3, [r7, #22]
 
@@ -1341,8 +1338,8 @@ bool protocol_parse_packet(const uint8_t *packet, size_t packet_len, protocol_pa
  8000ad4:	bd80      	pop	{r7, pc}
 
 08000ad6 <protocol_parser_init>:
+ */
 
-#include "main.h"
 #include "protocol_parser.h"
 
 void protocol_parser_init(protocol_parser_t *parser)
@@ -2377,7 +2374,7 @@ void SystemInit(void)
  8000ff0:	20010000 	.word	0x20010000
  8000ff4:	20000000 	.word	0x20000000
  8000ff8:	2000005c 	.word	0x2000005c
- 8000ffc:	08003b6c 	.word	0x08003b6c
+ 8000ffc:	08003b50 	.word	0x08003b50
  8001000:	2000005c 	.word	0x2000005c
  8001004:	200002fc 	.word	0x200002fc
 
@@ -4969,7 +4966,7 @@ HAL_StatusTypeDef HAL_RCC_ClockConfig(const RCC_ClkInitTypeDef  *RCC_ClkInitStru
  8001e4a:	bf00      	nop
  8001e4c:	40023c00 	.word	0x40023c00
  8001e50:	40023800 	.word	0x40023800
- 8001e54:	08003b10 	.word	0x08003b10
+ 8001e54:	08003af4 	.word	0x08003af4
  8001e58:	20000000 	.word	0x20000000
  8001e5c:	20000004 	.word	0x20000004
 
@@ -5226,7 +5223,7 @@ uint32_t HAL_RCC_GetPCLK1Freq(void)
  8002020:	4618      	mov	r0, r3
  8002022:	bd80      	pop	{r7, pc}
  8002024:	40023800 	.word	0x40023800
- 8002028:	08003b20 	.word	0x08003b20
+ 8002028:	08003b04 	.word	0x08003b04
 
 0800202c <HAL_RCC_GetPCLK2Freq>:
   * @note   Each time PCLK2 changes, this function must be called to update the
@@ -5252,7 +5249,7 @@ uint32_t HAL_RCC_GetPCLK2Freq(void)
  8002048:	4618      	mov	r0, r3
  800204a:	bd80      	pop	{r7, pc}
  800204c:	40023800 	.word	0x40023800
- 8002050:	08003b20 	.word	0x08003b20
+ 8002050:	08003b04 	.word	0x08003b04
 
 08002054 <HAL_UART_Init>:
   * @param  huart  Pointer to a UART_HandleTypeDef structure that contains
@@ -7891,10 +7888,10 @@ static void UART_SetConfig(UART_HandleTypeDef *huart)
  80031e6:	4798      	blx	r3
  80031e8:	3601      	adds	r6, #1
  80031ea:	e7f2      	b.n	80031d2 <__libc_init_array+0x1e>
- 80031ec:	08003b64 	.word	0x08003b64
- 80031f0:	08003b64 	.word	0x08003b64
- 80031f4:	08003b64 	.word	0x08003b64
- 80031f8:	08003b68 	.word	0x08003b68
+ 80031ec:	08003b48 	.word	0x08003b48
+ 80031f0:	08003b48 	.word	0x08003b48
+ 80031f4:	08003b48 	.word	0x08003b48
+ 80031f8:	08003b4c 	.word	0x08003b4c
 
 080031fc <__retarget_lock_acquire_recursive>:
  80031fc:	4770      	bx	lr
@@ -8400,11 +8397,11 @@ static void UART_SetConfig(UART_HandleTypeDef *huart)
  8003684:	4638      	mov	r0, r7
  8003686:	f000 f879 	bl	800377c <_printf_i>
  800368a:	e7ed      	b.n	8003668 <_svfiprintf_r+0x1c0>
- 800368c:	08003b28 	.word	0x08003b28
- 8003690:	08003b32 	.word	0x08003b32
+ 800368c:	08003b0c 	.word	0x08003b0c
+ 8003690:	08003b16 	.word	0x08003b16
  8003694:	00000000 	.word	0x00000000
  8003698:	080033f1 	.word	0x080033f1
- 800369c:	08003b2e 	.word	0x08003b2e
+ 800369c:	08003b12 	.word	0x08003b12
 
 080036a0 <_printf_common>:
  80036a0:	e92d 47f0 	stmdb	sp!, {r4, r5, r6, r7, r8, r9, sl, lr}
@@ -8733,8 +8730,8 @@ static void UART_SetConfig(UART_HandleTypeDef *huart)
  80039a8:	2500      	movs	r5, #0
  80039aa:	f104 0619 	add.w	r6, r4, #25
  80039ae:	e7f5      	b.n	800399c <_printf_i+0x220>
- 80039b0:	08003b39 	.word	0x08003b39
- 80039b4:	08003b4a 	.word	0x08003b4a
+ 80039b0:	08003b1d 	.word	0x08003b1d
+ 80039b4:	08003b2e 	.word	0x08003b2e
 
 080039b8 <memmove>:
  80039b8:	4288      	cmp	r0, r1

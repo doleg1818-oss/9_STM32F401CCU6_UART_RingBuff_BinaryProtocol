@@ -5,7 +5,6 @@
  *      Author: Olegd
  */
 
-#include "main.h"
 #include "protocol_parser.h"
 
 void protocol_parser_init(protocol_parser_t *parser)

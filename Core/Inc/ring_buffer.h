@@ -8,7 +8,9 @@
 #ifndef INC_RING_BUFFER_H_
 #define INC_RING_BUFFER_H_
 
-#include "main.h"
+#include <stdint.h>
+#include <stddef.h>
+#include <stdbool.h>
 
 typedef struct
 {

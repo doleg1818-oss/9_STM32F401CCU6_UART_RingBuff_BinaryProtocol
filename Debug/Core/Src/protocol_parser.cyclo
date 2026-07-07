@@ -1,2 +1,2 @@
-../Core/Src/protocol_parser.c:11:6:protocol_parser_init	2
-../Core/Src/protocol_parser.c:23:6:protocol_parser_process_byte	14
+../Core/Src/protocol_parser.c:10:6:protocol_parser_init	2
+../Core/Src/protocol_parser.c:22:6:protocol_parser_process_byte	14

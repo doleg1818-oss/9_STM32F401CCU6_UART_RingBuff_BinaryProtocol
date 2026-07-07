@@ -8,7 +8,9 @@
 #ifndef INC_PROTOCOL_H_
 #define INC_PROTOCOL_H_
 
-#include "main.h"
+#include <stdint.h>
+#include <stddef.h>
+#include <stdbool.h>
 
 #define PROTOCOL_HEADER_1 0xAAU
 #define PROTOCOL_HEADER_2 0x55U

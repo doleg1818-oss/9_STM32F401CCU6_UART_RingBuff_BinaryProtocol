@@ -21,6 +21,19 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "stdbool.h"
+#include "stdio.h"
+#include "string.h"
+#include "stdbool.h"
+
+#include "ring_buffer.h"
+#include <api_command.h>
+#include "crc8.h"
+#include "protocol_parser.h"
+#include "protocol.h"
+#include <api_command.h>
+#include "led.h"
+
 //#include "stdbool.h"
 /* USER CODE END Includes */
 
@@ -69,17 +82,17 @@ static void MX_USART1_UART_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void led_on_off(bool state)
-{
-	if(state == false)
-	{
-		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_SET);
-	}
-	else
-	{
-		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
-	}
-}
+//void led_on_off(bool state)
+//{
+//	if(state == false)
+//	{
+//		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_SET);
+//	}
+//	else
+//	{
+//		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
+//	}
+//}
 
 /*
  *  Debug function
@@ -95,59 +108,6 @@ void test_calculate_crc(void)
 }
 
 
-#define CMD_PING		0x01
-#define CMD_LED_SET		0x02
-#define CMD_GET_STATUS	0x03
-
-void procces_packed(protocol_packed_t *packed)
-{
-	if(packed == NULL)
-	{
-		return;
-	}
-
-	switch(packed->type)
-	{
-		case CMD_PING:
-		{
-			const char msg[] = "PONG..\n\r";
-			HAL_UART_Transmit(&huart1,(uint8_t*) msg, sizeof(msg)-1, HAL_MAX_DELAY);
-			break;
-		}
-		case CMD_LED_SET:
-		{
-			if(packed->payload_len == 1)
-			{
-				bool led_state = (packed->payload[0] != 0);
-				led_on_off(led_state);
-				const char msg[] = "LED OK\n\r";
-				HAL_UART_Transmit(&huart1,(uint8_t*) msg, sizeof(msg)-1, HAL_MAX_DELAY);
-			}
-			else
-			{
-				const char msg[] = "LED ERR\n\r";
-				HAL_UART_Transmit(&huart1,(uint8_t*) msg, sizeof(msg)-1, HAL_MAX_DELAY);
-			}
-			break;
-		}
-		case CMD_GET_STATUS:
-		{
-			char msg[64] = {0,};
-			snprintf(msg, sizeof(msg), "STATUS LED %d \n\r",
-					HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13) == GPIO_PIN_RESET ? 1 : 0);
-			HAL_UART_Transmit(&huart1,(uint8_t*) msg, sizeof(msg)-1, HAL_MAX_DELAY);
-			break;
-		}
-		default:
-		{
-			const char msg[] = "Wrong CMD !!!\n\r";
-			HAL_UART_Transmit(&huart1,(uint8_t*) msg, sizeof(msg)-1, HAL_MAX_DELAY);
-			break;
-		}
-
-
-	}
-}
 
 /* USER CODE END 0 */
 
@@ -183,16 +143,13 @@ int main(void)
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
 
-
   //test_calculate_crc();
-
 
   rb_init(&uart_rx_rb, uart_rx_storage, UART_RX_BUFFER_SIZE);
   protocol_parser_init(&protocol_parser);
 
   HAL_UART_Receive_IT(&huart1, &uart_rx_byte, 1);		// Enable receive one bite
   /* USER CODE END 2 */
-
 
 
   /* Infinite loop */
@@ -218,10 +175,8 @@ int main(void)
 		  if(protocol_parser_process_byte(&protocol_parser, byte, &received_packet))
 		  {
 			  procces_packed(&received_packet);
-
 //			  const char msg[] = "PACKED OK";
 //			  HAL_UART_Transmit(&huart1,(uint8_t*) msg, sizeof(msg)-1, HAL_MAX_DELAY);
-
 			  uint8_t test = 0;
 		  }
 	  }

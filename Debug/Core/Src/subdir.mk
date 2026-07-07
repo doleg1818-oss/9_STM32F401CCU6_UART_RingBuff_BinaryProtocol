@@ -5,8 +5,9 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../Core/Src/app_command.c \
+../Core/Src/api_command.c \
 ../Core/Src/crc8.c \
+../Core/Src/led.c \
 ../Core/Src/main.c \
 ../Core/Src/protocol.c \
 ../Core/Src/protocol_parser.c \
@@ -18,8 +19,9 @@ C_SRCS += \
 ../Core/Src/system_stm32f4xx.c 
 
 OBJS += \
-./Core/Src/app_command.o \
+./Core/Src/api_command.o \
 ./Core/Src/crc8.o \
+./Core/Src/led.o \
 ./Core/Src/main.o \
 ./Core/Src/protocol.o \
 ./Core/Src/protocol_parser.o \
@@ -31,8 +33,9 @@ OBJS += \
 ./Core/Src/system_stm32f4xx.o 
 
 C_DEPS += \
-./Core/Src/app_command.d \
+./Core/Src/api_command.d \
 ./Core/Src/crc8.d \
+./Core/Src/led.d \
 ./Core/Src/main.d \
 ./Core/Src/protocol.d \
 ./Core/Src/protocol_parser.d \
@@ -51,7 +54,7 @@ Core/Src/%.o Core/Src/%.su Core/Src/%.cyclo: ../Core/Src/%.c Core/Src/subdir.mk
 clean: clean-Core-2f-Src
 
 clean-Core-2f-Src:
-	-$(RM) ./Core/Src/app_command.cyclo ./Core/Src/app_command.d ./Core/Src/app_command.o ./Core/Src/app_command.su ./Core/Src/crc8.cyclo ./Core/Src/crc8.d ./Core/Src/crc8.o ./Core/Src/crc8.su ./Core/Src/main.cyclo ./Core/Src/main.d ./Core/Src/main.o ./Core/Src/main.su ./Core/Src/protocol.cyclo ./Core/Src/protocol.d ./Core/Src/protocol.o ./Core/Src/protocol.su ./Core/Src/protocol_parser.cyclo ./Core/Src/protocol_parser.d ./Core/Src/protocol_parser.o ./Core/Src/protocol_parser.su ./Core/Src/ring_buffer.cyclo ./Core/Src/ring_buffer.d ./Core/Src/ring_buffer.o ./Core/Src/ring_buffer.su ./Core/Src/stm32f4xx_hal_msp.cyclo ./Core/Src/stm32f4xx_hal_msp.d ./Core/Src/stm32f4xx_hal_msp.o ./Core/Src/stm32f4xx_hal_msp.su ./Core/Src/stm32f4xx_it.cyclo ./Core/Src/stm32f4xx_it.d ./Core/Src/stm32f4xx_it.o ./Core/Src/stm32f4xx_it.su ./Core/Src/syscalls.cyclo ./Core/Src/syscalls.d ./Core/Src/syscalls.o ./Core/Src/syscalls.su ./Core/Src/sysmem.cyclo ./Core/Src/sysmem.d ./Core/Src/sysmem.o ./Core/Src/sysmem.su ./Core/Src/system_stm32f4xx.cyclo ./Core/Src/system_stm32f4xx.d ./Core/Src/system_stm32f4xx.o ./Core/Src/system_stm32f4xx.su
+	-$(RM) ./Core/Src/api_command.cyclo ./Core/Src/api_command.d ./Core/Src/api_command.o ./Core/Src/api_command.su ./Core/Src/crc8.cyclo ./Core/Src/crc8.d ./Core/Src/crc8.o ./Core/Src/crc8.su ./Core/Src/led.cyclo ./Core/Src/led.d ./Core/Src/led.o ./Core/Src/led.su ./Core/Src/main.cyclo ./Core/Src/main.d ./Core/Src/main.o ./Core/Src/main.su ./Core/Src/protocol.cyclo ./Core/Src/protocol.d ./Core/Src/protocol.o ./Core/Src/protocol.su ./Core/Src/protocol_parser.cyclo ./Core/Src/protocol_parser.d ./Core/Src/protocol_parser.o ./Core/Src/protocol_parser.su ./Core/Src/ring_buffer.cyclo ./Core/Src/ring_buffer.d ./Core/Src/ring_buffer.o ./Core/Src/ring_buffer.su ./Core/Src/stm32f4xx_hal_msp.cyclo ./Core/Src/stm32f4xx_hal_msp.d ./Core/Src/stm32f4xx_hal_msp.o ./Core/Src/stm32f4xx_hal_msp.su ./Core/Src/stm32f4xx_it.cyclo ./Core/Src/stm32f4xx_it.d ./Core/Src/stm32f4xx_it.o ./Core/Src/stm32f4xx_it.su ./Core/Src/syscalls.cyclo ./Core/Src/syscalls.d ./Core/Src/syscalls.o ./Core/Src/syscalls.su ./Core/Src/sysmem.cyclo ./Core/Src/sysmem.d ./Core/Src/sysmem.o ./Core/Src/sysmem.su ./Core/Src/system_stm32f4xx.cyclo ./Core/Src/system_stm32f4xx.d ./Core/Src/system_stm32f4xx.o ./Core/Src/system_stm32f4xx.su
 
 .PHONY: clean-Core-2f-Src
 

@@ -1,9 +1,7 @@
-../Core/Src/main.c:72:6:led_on_off	2
-../Core/Src/main.c:87:6:test_calculate_crc	1
-../Core/Src/main.c:102:6:procces_packed	7
-../Core/Src/main.c:158:5:main	3
-../Core/Src/main.c:241:6:SystemClock_Config	3
-../Core/Src/main.c:283:13:MX_USART1_UART_Init	2
-../Core/Src/main.c:316:13:MX_GPIO_Init	1
-../Core/Src/main.c:344:6:HAL_UART_RxCpltCallback	2
-../Core/Src/main.c:361:6:Error_Handler	1
+../Core/Src/main.c:100:6:test_calculate_crc	1
+../Core/Src/main.c:118:5:main	3
+../Core/Src/main.c:196:6:SystemClock_Config	3
+../Core/Src/main.c:238:13:MX_USART1_UART_Init	2
+../Core/Src/main.c:271:13:MX_GPIO_Init	1
+../Core/Src/main.c:299:6:HAL_UART_RxCpltCallback	2
+../Core/Src/main.c:316:6:Error_Handler	1

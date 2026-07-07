@@ -4,8 +4,8 @@
  *  Created on: Jun 3, 2026
  *      Author: Olegd
  */
+//
 
-#include "main.h"
 #include "protocol.h"
 #include "crc8.h"
 

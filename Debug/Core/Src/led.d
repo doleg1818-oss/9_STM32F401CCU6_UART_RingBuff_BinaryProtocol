@@ -1,5 +1,4 @@
-Core/Src/app_command.o: ../Core/Src/app_command.c \
- ../Core/Inc/app_command.h ../Core/Inc/main.h \
+Core/Src/led.o: ../Core/Src/led.c ../Core/Inc/led.h ../Core/Inc/main.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h \
  ../Core/Inc/stm32f4xx_hal_conf.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h \
@@ -25,11 +24,8 @@ Core/Src/app_command.o: ../Core/Src/app_command.c \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ramfunc.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h \
- ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
- ../Core/Inc/ring_buffer.h ../Core/Inc/crc8.h \
- ../Core/Inc/protocol_parser.h ../Core/Inc/protocol.h \
- ../Core/Inc/app_command.h
-../Core/Inc/app_command.h:
+ ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
+../Core/Inc/led.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
 ../Core/Inc/stm32f4xx_hal_conf.h:
@@ -57,8 +53,3 @@ Core/Src/app_command.o: ../Core/Src/app_command.c \
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:
-../Core/Inc/ring_buffer.h:
-../Core/Inc/crc8.h:
-../Core/Inc/protocol_parser.h:
-../Core/Inc/protocol.h:
-../Core/Inc/app_command.h:
