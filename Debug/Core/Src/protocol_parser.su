@@ -1,0 +1,2 @@
+../Core/Src/protocol_parser.c:11:6:protocol_parser_init	16	static
+../Core/Src/protocol_parser.c:23:6:protocol_parser_process_byte	32	static

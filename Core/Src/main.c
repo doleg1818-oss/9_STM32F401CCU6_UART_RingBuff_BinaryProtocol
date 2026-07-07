@@ -21,7 +21,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "stdbool.h"
+//#include "stdbool.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -31,6 +31,18 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define UART_RX_BUFFER_SIZE 128
+static uint8_t uart_rx_storage[UART_RX_BUFFER_SIZE];
+ring_buffer_t uart_rx_rb;
+
+uint8_t uart_rx_byte;		// One byte for receive data
+
+uint8_t byte = 0;	 // for tests
+
+protocol_parser_t protocol_parser;
+protocol_packed_t received_packet;
+
+
 
 /* USER CODE END PD */
 
@@ -39,7 +51,9 @@
 
 /* USER CODE END PM */
 
+
 /* Private variables ---------------------------------------------------------*/
+UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN PV */
 
@@ -48,6 +62,7 @@
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
+static void MX_USART1_UART_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -64,8 +79,76 @@ void led_on_off(bool state)
 	{
 		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
 	}
-
 }
+
+/*
+ *  Debug function
+ */
+void test_calculate_crc(void)
+{
+	const char msg[] = "CALCULATE CRC...\r\n";
+	HAL_UART_Transmit(&huart1,(uint8_t*) msg, sizeof(msg)-1, HAL_MAX_DELAY);
+
+	uint8_t test_crc[7] = {0xAA, 0x55, 0x03, 0x01, 0x19, 0x32, 0x48};
+	uint8_t length_of_crc = length_of_crc = sizeof(test_crc)/sizeof(test_crc[0]);
+	uint8_t crc =  crc8_calculate(test_crc, length_of_crc);
+}
+
+
+#define CMD_PING		0x01
+#define CMD_LED_SET		0x02
+#define CMD_GET_STATUS	0x03
+
+void procces_packed(protocol_packed_t *packed)
+{
+	if(packed == NULL)
+	{
+		return;
+	}
+
+	switch(packed->type)
+	{
+		case CMD_PING:
+		{
+			const char msg[] = "PONG..\n\r";
+			HAL_UART_Transmit(&huart1,(uint8_t*) msg, sizeof(msg)-1, HAL_MAX_DELAY);
+			break;
+		}
+		case CMD_LED_SET:
+		{
+			if(packed->payload_len == 1)
+			{
+				bool led_state = (packed->payload[0] != 0);
+				led_on_off(led_state);
+				const char msg[] = "LED OK\n\r";
+				HAL_UART_Transmit(&huart1,(uint8_t*) msg, sizeof(msg)-1, HAL_MAX_DELAY);
+			}
+			else
+			{
+				const char msg[] = "LED ERR\n\r";
+				HAL_UART_Transmit(&huart1,(uint8_t*) msg, sizeof(msg)-1, HAL_MAX_DELAY);
+			}
+			break;
+		}
+		case CMD_GET_STATUS:
+		{
+			char msg[64] = {0,};
+			snprintf(msg, sizeof(msg), "STATUS LED %d \n\r",
+					HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13) == GPIO_PIN_RESET ? 1 : 0);
+			HAL_UART_Transmit(&huart1,(uint8_t*) msg, sizeof(msg)-1, HAL_MAX_DELAY);
+			break;
+		}
+		default:
+		{
+			const char msg[] = "Wrong CMD !!!\n\r";
+			HAL_UART_Transmit(&huart1,(uint8_t*) msg, sizeof(msg)-1, HAL_MAX_DELAY);
+			break;
+		}
+
+
+	}
+}
+
 /* USER CODE END 0 */
 
 /**
@@ -97,19 +180,53 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
 
+
+  //test_calculate_crc();
+
+
+  rb_init(&uart_rx_rb, uart_rx_storage, UART_RX_BUFFER_SIZE);
+  protocol_parser_init(&protocol_parser);
+
+  HAL_UART_Receive_IT(&huart1, &uart_rx_byte, 1);		// Enable receive one bite
   /* USER CODE END 2 */
+
+
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
 
-	  led_on_off(true);
-	  HAL_Delay(100);
-	  led_on_off(false);
-	  HAL_Delay(900);
+//	  led_on_off(true);
+//	  HAL_Delay(100);
+//	  led_on_off(false);
+//	  HAL_Delay(900);
+
+//	  if(rb_pop(&uart_rx_rb, &byte))
+//	  {
+//		  char str[10];
+//		  sprintf(str, "%02X ", byte);
+//		  HAL_UART_Transmit(&huart1, (uint8_t *)str, strlen(str), HAL_MAX_DELAY);
+//	  }
+
+
+	  if(rb_pop(&uart_rx_rb, &byte))
+	  {
+		  if(protocol_parser_process_byte(&protocol_parser, byte, &received_packet))
+		  {
+			  procces_packed(&received_packet);
+
+//			  const char msg[] = "PACKED OK";
+//			  HAL_UART_Transmit(&huart1,(uint8_t*) msg, sizeof(msg)-1, HAL_MAX_DELAY);
+
+			  uint8_t test = 0;
+		  }
+	  }
+
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -159,6 +276,39 @@ void SystemClock_Config(void)
 }
 
 /**
+  * @brief USART1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART1_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART1_Init 0 */
+
+  /* USER CODE END USART1_Init 0 */
+
+  /* USER CODE BEGIN USART1_Init 1 */
+
+  /* USER CODE END USART1_Init 1 */
+  huart1.Instance = USART1;
+  huart1.Init.BaudRate = 115200;
+  huart1.Init.WordLength = UART_WORDLENGTH_8B;
+  huart1.Init.StopBits = UART_STOPBITS_1;
+  huart1.Init.Parity = UART_PARITY_NONE;
+  huart1.Init.Mode = UART_MODE_TX_RX;
+  huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart1.Init.OverSampling = UART_OVERSAMPLING_16;
+  if (HAL_UART_Init(&huart1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART1_Init 2 */
+
+  /* USER CODE END USART1_Init 2 */
+
+}
+
+/**
   * @brief GPIO Initialization Function
   * @param None
   * @retval None
@@ -191,6 +341,16 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+	if(huart->Instance == USART1)
+	{
+		rb_push(&uart_rx_rb, uart_rx_byte);
+		HAL_UART_Receive_IT(&huart1, &uart_rx_byte, 1);		// Enable receive one bite
+	}
+
+}
+
 
 /* USER CODE END 4 */
 
